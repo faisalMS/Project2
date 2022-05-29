@@ -57,14 +57,4 @@ public class ProductController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Api("advisorID doesn't exists!",200));
     }
-
-    @GetMapping("/getAllComForPro/{productId}")
-    public ResponseEntity<Product> getAllComForPro(@PathVariable String productId){
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllComForPro(productId));
-    }
-
-    @GetMapping("/getRate5pro")
-    public ResponseEntity<ArrayList<Product>> getRate5pro(){
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getRate5pro());
-    }
 }

@@ -1,6 +1,5 @@
 package com.example.ecommercewebsite.modle;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -22,13 +21,14 @@ public class Product {
     @NotBlank(message = "CategoryId is required")
     @Size(min = 3, message = "Have to be 3 character long")
     private String categoryid;
-    private ArrayList<Comment> commentlist;
+    private ArrayList<Comment> comments ;
 
-     public Product(String id, String name, Integer price, String categoryid, ArrayList<Comment> commentlist) {
+
+     public Product(String id, String name, int price, String categoryid) {
          this.id = id;
          this.name = name;
          this.price = price;
          this.categoryid = categoryid;
-         this.commentlist =new ArrayList<>();
+         this.comments = new ArrayList<>();
      }
  }

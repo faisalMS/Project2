@@ -17,11 +17,11 @@ public class Cart {
     @NotBlank(message = "Name is required")
     @Size(min = 3, message = "Have to be 3 character long")
     private String userid;
-    private ArrayList<Product> productlist;
+    private ArrayList<Product> products;
 
-    public Cart(String id, String userid, ArrayList<Product> productlist) {
+    public Cart(String id, String userid) {
         this.id = id;
         this.userid = userid;
-        this.productlist = new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 }

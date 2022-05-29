@@ -22,7 +22,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getComments());
     }
 
-    @PostMapping("/postcommOnProduct/{userId}/{productId}")
+    @PostMapping("/postCommOnProduct/{userId}/{productId}")
     public ResponseEntity<Api> postCommOnProduct(@PathVariable String userId, @PathVariable String productId, Comment comment) {
         Integer postCommOnProduct = commentService.postCommOnProduct(userId, productId, comment);
         switch (postCommOnProduct) {
@@ -40,5 +40,14 @@ public class CommentController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server error", 500));
 
         }
+
+    }
+    @GetMapping("/rating_five")
+    public ResponseEntity getFiveComments(){
+        ArrayList<Comment> FiveComments = commentService.getComments();
+        if(FiveComments == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Product comments not found",400));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(FiveComments);
     }
 }

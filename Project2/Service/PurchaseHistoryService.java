@@ -15,8 +15,15 @@ public class PurchaseHistoryService {
         return purchaseHistoryList;
     }
 
-    public boolean addPurchaseHistory(PurchaseHistory purchaseHistory){
-        purchaseHistoryList.add(purchaseHistory);
-        return true;
+
+    public Boolean addPurchaseHistory2(String userId,String productId){
+        boolean histories = false;
+        for (PurchaseHistory item : purchaseHistoryList) {
+            if(item.getUserid().equals(userId)&&item.getProductid().equals(productId)){
+                histories = true;
+            }
+        }
+        return histories;
     }
+
 }

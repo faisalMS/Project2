@@ -45,7 +45,7 @@ public class UserService {
         return false;
     }
 
-    public User UsersID(String userid) {
+    public User getUsersID(String userid) {
         for (User user : userList) {
             if (user.getId().equals(userid)) {
                 return user;
@@ -60,15 +60,15 @@ public class UserService {
         if(merchantStock.getStock() < 1){
             return -1;
         }
-        User user = UsersID(userId);
+        User user = getUsersID(userId);
         Product product = productService.productsId(productId);
         if(user.getBalance()<product.getPrice()){
             return 0;
         }
-        merchantStock.setStock(merchantStock.getStock()-1);
+        merchantStock.setStock(merchantStock.getStock() -1);
 
         user.setBalance(user.getBalance()-product.getPrice());
-        purchaseHistoryService.addPurchaseHistory(userId,productId);
+        purchaseHistoryService.addPurchaseHistory2(userId, productId);
         return 1;
     }
 

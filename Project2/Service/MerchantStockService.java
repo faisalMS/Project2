@@ -52,7 +52,7 @@ public class MerchantStockService {
 
     public Integer addPToMS(String userId, String merchantId, Integer additional_stock){
 
-        User user = userService.UsersID(userId);
+        User user = userService.getUsersID(userId);
         if(user == null){
             return -1;
         }

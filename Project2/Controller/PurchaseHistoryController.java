@@ -1,15 +1,12 @@
 package com.example.ecommercewebsite.controller;
 
-import com.example.ecommercewebsite.modle.Api;
 import com.example.ecommercewebsite.modle.PurchaseHistory;
 import com.example.ecommercewebsite.service.PurchaseHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController

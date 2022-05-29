@@ -61,17 +61,17 @@ public class MerchantStockController {
         Integer addPToMS = merchantStockService.addPToMS(userId, merchantId, stock);
         switch (addPToMS){
             case -1:
-                return ResponseEntity.status(400).body(new Api("Merchant not found",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Merchant not found",400));
             case 0:
-                return ResponseEntity.status(400).body(new Api("Merchant doesn't sell this product",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Merchant doesn't sell this product",400));
             case 1:
-                return ResponseEntity.status(400).body(new Api("Out of stock",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Out of stock",400));
             case 2:
-                return ResponseEntity.status(400).body(new Api("User doesn't have enough balance",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("User doesn't have enough balance",400));
             case 3:
-                return ResponseEntity.status(200).body(new Api("Purchase completed",200));
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Purchase completed",200));
             default:
-                return ResponseEntity.status(500).body(new Api("Server error",500));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server error",500));
         }
     }
 }

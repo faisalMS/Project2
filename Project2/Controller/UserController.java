@@ -1,7 +1,6 @@
 package com.example.ecommercewebsite.controller;
 
 import com.example.ecommercewebsite.modle.Api;
-import com.example.ecommercewebsite.modle.Comment;
 import com.example.ecommercewebsite.modle.PurchaseHistory;
 import com.example.ecommercewebsite.modle.User;
 import com.example.ecommercewebsite.service.UserService;

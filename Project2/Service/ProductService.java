@@ -38,6 +38,9 @@ public class ProductService {
         return false;
     }
 
+    public Product getProduct(String productID) {
+        return productArrayList.get(findProductIdx(productID));
+    }
     public Product productsId(String productid){
         for( Product product : productArrayList){
             if(product.equals(productid)){
@@ -47,16 +50,15 @@ public class ProductService {
         return null;
     }
 
-    public Product getAllComForPro(String productId){
-        Product product = productsId(productId);
-        if(product == null){
-            return null;
+
+
+    public Integer findProductIdx(String id){
+        for (int i = 0; i <productArrayList.size() ; i++) {
+            if(productArrayList.get(i).getId().equals(id)){
+                return i;
+            }
         }
-        Product comments = product;
-        return comments;
-    }
-    public ArrayList<Product> getRate5pro(){
-        return productArrayList;
+        return null;
     }
 
 }
