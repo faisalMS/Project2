@@ -23,13 +23,13 @@ public class CartController {
     }
 
 
-    @GetMapping("/{cart_id}")
-    public ResponseEntity getCart(@PathVariable String cart_id){
-        Cart target_cart=cartService.findCart(cart_id);
-        if(target_cart==null){
-            return ResponseEntity.status(500).body(new Api("Invalid id",500));
+    @GetMapping("/{carId}")
+    public ResponseEntity getCart(@PathVariable String carId){
+        Cart tcar = cartService.findCart(carId);
+        if(car == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Invalid id",500));
         }
-        return ResponseEntity.status(200).body(target_cart);
+        return ResponseEntity.status(HttpStatus.OK).body(target_cart);
     }
 
     @PostMapping("/add")
@@ -37,33 +37,33 @@ public class CartController {
         Integer productAdditionCase=cartService.addProduct(cartID,userID,productID);
         switch (productAdditionCase){
             case -1:
-                return ResponseEntity.status(400).body(new Api("Invalid cart id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid cart id",400));
             case 0:
-                return ResponseEntity.status(400).body(new Api("Invalid user id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid user id",400));
             case 1:
-                return ResponseEntity.status(400).body(new Api("Invalid product id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid product id",400));
             case 2:
-                return ResponseEntity.status(201).body(new Api("Product added",201));
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Product added",201));
             default:
-                return ResponseEntity.status(500).body(new Api("Server Error",500));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server Error",500));
 
         }
     }
 
     @PutMapping("/remove")
-    public ResponseEntity removeProduct(@RequestParam String cartID,@RequestParam String userID,@RequestParam String productID){
-        Integer productAdditionCase=cartService.removeProduct(cartID,userID,productID);
+    public ResponseEntity removeProduct(@RequestParam String cartId,@RequestParam String userId,@RequestParam String productId){
+        Integer productAdditionCase =c artService.removeProduct(cartId,userId,productId);
         switch (productAdditionCase){
             case -1:
-                return ResponseEntity.status(400).body(new Api("Invalid cart id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid cart id",400));
             case 0:
-                return ResponseEntity.status(400).body(new Api("Invalid user id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid user id",400));
             case 1:
-                return ResponseEntity.status(400).body(new Api("Invalid user id",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Invalid user id",400));
             case 2:
-                return ResponseEntity.status(201).body(new Api("Product removed",201));
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Product removed",201));
             default:
-                return ResponseEntity.status(500).body(new Api("Server Error",500));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server Error",500));
 
         }
     }
