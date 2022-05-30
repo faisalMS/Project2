@@ -1,24 +1,22 @@
-package com.example.ecommercewebsite.controller;
+package com.example.ecommercewebsite.Controller;
 
-import com.example.ecommercewebsite.modle.PurchaseHistory;
-import com.example.ecommercewebsite.service.PurchaseHistoryService;
+import com.example.ecommercewebsite.Service.PurchaseHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/purchaseHistory")
+@RequestMapping("api/v1/purchaseHistories")
 @RequiredArgsConstructor
-public class PurchaseHistoryController {
+public class PurchaseHistory {
 
     private final PurchaseHistoryService purchaseHistoryService;
 
     @GetMapping
-    public ResponseEntity<ArrayList<PurchaseHistory>> getPurchaseHistories(){
+    public ResponseEntity getPurchaseHistories(){
         return ResponseEntity.status(HttpStatus.OK).body(purchaseHistoryService.getPurchaseHistories());
     }
-
 }
