@@ -1,42 +1,46 @@
-package com.example.ecommercewebsite.service;
+package com.example.ecommercewebsite.Service;
 
-import com.example.ecommercewebsite.modle.Category;
+import com.example.ecommercewebsite.Model.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-
 @Service
 public class CategoryService {
 
-
-    private ArrayList<Category> categoryArrayList = new ArrayList<>();
-
-    public ArrayList<Category> getCategories() {
-        return categoryArrayList;
+    private ArrayList<Category> categorylist=new ArrayList<>();
+    public ArrayList<Category> getCategories(){
+        return categorylist;
     }
 
-    public boolean addCategories(Category category){
-        return categoryArrayList.add(category);
-    }
-
-    public Boolean deleteCategories(String category) {
-        for (int i = 0; i < categoryArrayList.size(); i++) {
-            if (categoryArrayList.get(i).getId().equals(category)) {
-                categoryArrayList.remove(i);
-                return true;
+    public Integer CategoriesId(String id){
+        for (int i = 0; i <categorylist.size() ; i++) {
+            if(categorylist.get(i).getID().equals(id)){
+                return i;
             }
         }
-        return false;
+        return null;
     }
 
-    public Boolean updateCategories(Category category) {
-        for (int i = 0; i < categoryArrayList.size(); i++) {
-            if (categoryArrayList.get(i).getId().equals(category.getId())) {
-                categoryArrayList.set(i,category);
-                return true;
-            }
+    public Boolean addCategories(Category category){
+        return categorylist.add(category);
+    }
+
+    public Boolean updateCategories(Category category,String id){
+        Integer tarCategoryId = CategoriesId(id);
+        if(tarCategoryId == null){
+            return false;
         }
-        return false;
+        categorylist.set(tarCategoryId, category);
+        return true;
+    }
+
+    public Boolean deleteCategories(String id){
+        Integer tarCategoryId = CategoriesId(id);
+        if(tarCategoryId == null){
+            return false;
+        }
+        categorylist.remove(tarCategoryId);
+        return true;
     }
 }
