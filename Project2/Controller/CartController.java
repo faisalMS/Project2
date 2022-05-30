@@ -1,9 +1,9 @@
 package com.example.ecommercewebsite.Controller;
 
-import com.example.ecommercewebsite2.Model.Api;
-import com.example.ecommercewebsite2.Model.Cart;
-import com.example.ecommercewebsite2.Service.CartService;
-import com.example.ecommercewebsite2.Service.UserService;
+import com.example.ecommercewebsite.Model.Api;
+import com.example.ecommercewebsite.Model.Cart;
+import com.example.ecommercewebsite.Service.CartService;
+import com.example.ecommercewebsite.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
