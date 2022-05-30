@@ -1,9 +1,10 @@
-package com.example.ecommercewebsite.controller;
+package com.example.ecommercewebsite2.Controller;
 
-import com.example.ecommercewebsite.modle.Api;
-import com.example.ecommercewebsite.modle.PurchaseHistory;
-import com.example.ecommercewebsite.modle.User;
-import com.example.ecommercewebsite.service.UserService;
+import com.example.ecommercewebsite2.Model.Api;
+import com.example.ecommercewebsite2.Model.Cart;
+import com.example.ecommercewebsite2.Model.PurchaseHistory;
+import com.example.ecommercewebsite2.Model.User;
+import com.example.ecommercewebsite2.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,65 +22,92 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<ArrayList<User>> getUsers(){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUser());
+    public ResponseEntity getUsers() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userService.getUsers());
     }
 
     @PostMapping
-    public ResponseEntity<Api> addUsers(@RequestBody @Valid User user, Errors errors) {
-        if (errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(errors.getFieldError().getDefaultMessage(), 400));
+    public ResponseEntity addUsers(@RequestBody @Valid User user, Errors error) {
+        if (error.hasFieldErrors()) {
+            String message = error.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(message, 400));
         }
-        boolean isAddUsers = userService.addUsers(user);
-        if (!isAddUsers) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Error adding a user", 200));
+        Boolean isAddUser = userService.addUsers(user);
+        if (!isAddUser) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("User no added", 400));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("New user added", 200));
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("User added", 200));
     }
 
-    @DeleteMapping("/{userID}")
-    public ResponseEntity<Api> deleteUsers(@PathVariable String userID) {
-        Boolean deleteUsers = userService.deleteUsers(userID);
-        if (!deleteUsers) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("userID doesn't exists!",400));
+    @PutMapping("/{userId}")
+    public ResponseEntity updateUsers(@RequestBody @Valid User user, @PathVariable String userId, Errors error) {
+        if (error.hasFieldErrors()) {
+            String message = error.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(message, 400));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("userID deleted!",200));
+        Boolean isUpdateUser = userService.updateUsers(user, userId);
+        if (!isUpdateUser) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("NO updated", 400));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("User updated", 200));
+
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity deleteUsers(@PathVariable String userId) {
+        Boolean isDeleteUser = userService.deleteUsers(userId);
+        if (!isDeleteUser) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("NO deleted", 400));
 
-    @PutMapping
-    public ResponseEntity<Api> updateUsers(@RequestBody @Valid User user, Errors errors) {
-        if(errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(errors.getFieldError().getDefaultMessage(),400));
         }
-        Boolean updateUsers = userService.updateUsers(user);
-        if (!updateUsers) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Advisor edited!",500));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("advisorID doesn't exists!",200));
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("User deleted", 200));
+
     }
 
-    @PostMapping("/buyProDirWithOCart/{userId}/{productId}/{merchantId}")
-    public ResponseEntity<Api> buyProDirWithOCart(@PathVariable String userId,@PathVariable String productId,@PathVariable String merchantId){
-        Integer buyProDirWithOCart = userService.buyProDirWithOCart(userId, productId, merchantId);
-        switch (buyProDirWithOCart){
+    @PostMapping("/withOutCart")
+    public ResponseEntity withOutCartCarts(@RequestParam String userId, @RequestParam String productId, @RequestParam String merchantId) {
+        Integer withOutCartCarts = userService.withOutCartCart(userId, productId, merchantId);
+        switch (withOutCartCarts) {
             case -1:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Merchant not found",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Product out of stock", 400));
             case 0:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Merchant doesn't sell this product",400));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("No balance", 400));
             case 1:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Out of stock",400));
-            case 2:
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("User doesn't have enough balance",400));
-            case 3:
-                return ResponseEntity.status(HttpStatus.OK).body(new Api("Purchase completed",200));
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Product successfully", 20));
             default:
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server error",500));
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server Error", 500));
+
         }
     }
 
-    @GetMapping("/AllPurchaseHistory/{userID}")
-    public ResponseEntity<ArrayList<PurchaseHistory>> AllPurchaseHistory(@PathVariable String userID){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.AllPurchaseHistory(userID));
+
+    @PostMapping("/withCart")
+    public ResponseEntity withCarts(@RequestBody @Valid Cart cart, Errors error) {
+        if (error.hasFieldErrors()) {
+            String message = error.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(message, 400));
+        }
+
+        Integer withCart = userService.WithCarts(cart);
+        switch (withCart) {
+            case -1:
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Product out of stock", 400));
+            case 0:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("No balance", 400));
+            case 1:
+                return ResponseEntity.status(HttpStatus.OK).body(new Api("Product successfully", 200));
+            default:
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Server Error", 500));
+
+        }
+    }
+
+    @GetMapping("histories")
+    public ResponseEntity getPurchaseHistories (@RequestParam String userId){
+        ArrayList<PurchaseHistory> histories = userService.getHistories(userId);
+        if (histories == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("User not found", 400));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(histories);
     }
 }
