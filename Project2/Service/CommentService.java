@@ -1,6 +1,8 @@
-package com.example.ecommercewebsite.service;
+package com.example.ecommercewebsite.Service;
 
-import com.example.ecommercewebsite.modle.*;
+import com.example.ecommercewebsite.Model.Comment;
+import com.example.ecommercewebsite.Model.Product;
+import com.example.ecommercewebsite.Model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,37 +12,44 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private ArrayList<Comment> commentArrayList = new ArrayList<>();
 
-    private final UserService userService;
-    private final ProductService productService;
+    private ArrayList<Comment> commentArrayList=new ArrayList<>();
     private final PurchaseHistoryService purchaseHistoryService;
-
-    public ArrayList<Comment> getComments() {
+    private final ProductService productService;
+    private final UserService userService;
+    public ArrayList<Comment> getComments(){
         return commentArrayList;
     }
 
-    public Integer postCommOnProduct(String userId, String productId, Comment comment) {
-        User user = userService.getUsersID(userId);
-        if (user == null) {
+    public Integer postComment(String userId,String productId,Comment comment){
+        User taUser = userService.getUsers(userId);
+        if(taUser == null){
             return -1;
         }
-        boolean histories = purchaseHistoryService.addPurchaseHistory2(userId, productId);
-        if (!histories) {
+        boolean histories = purchaseHistoryService.histories(userId,productId);
+        if(!histories)
+        {
             return 0;
         }
         commentArrayList.add(comment);
         return 1;
     }
+    public ArrayList<Comment> getProductComments(String productId){
+        Product tarProduct=productService.getProducts(productId);
+        if(tarProduct == null){
+            return null;
+        }
+        return tarProduct.getComments();
 
-    public ArrayList<Comment> getFiveComments(){
-        ArrayList<Comment> commentArrayList1 = new ArrayList<>();
+    }
+    public ArrayList<Comment>getFiveSComments(){
+        ArrayList<Comment> comments1 = new ArrayList<>();
         for (Comment comment : commentArrayList) {
             if(comment.getRate() == 5){
-                commentArrayList1.add(comment);
+                comments1.add(comment);
             }
 
         }
-        return commentArrayList1;
+        return comments1;
     }
 }
