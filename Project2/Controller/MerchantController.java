@@ -1,8 +1,8 @@
 package com.example.ecommercewebsite.Controller;
 
-import com.example.ecommercewebsite2.Model.Api;
-import com.example.ecommercewebsite2.Model.Merchant;
-import com.example.ecommercewebsite2.Service.MerchantService;
+import com.example.ecommercewebsite.Model.Api;
+import com.example.ecommercewebsite.Model.Merchant;
+import com.example.ecommercewebsite.Service.MerchantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +56,7 @@ public class MerchantController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("No deleted",400));
 
         }
-        return ResponseEntity.status(201).body(new Api("Merchant deleted",201));
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("Merchant deleted",200));
 
     }
 }
