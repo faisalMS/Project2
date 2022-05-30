@@ -1,7 +1,8 @@
-package com.example.ecommercewebsite.service;
+package com.example.ecommercewebsite.Service;
 
-import com.example.ecommercewebsite.modle.MerchantStock;
-import com.example.ecommercewebsite.modle.User;
+import com.example.ecommercewebsite.Model.Merchant;
+import com.example.ecommercewebsite.Model.MerchantStock;
+import com.example.ecommercewebsite.Model.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,58 +12,68 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class MerchantStockService {
 
-    private ArrayList<MerchantStock> merchantStockList = new ArrayList<>();
-    private final UserService userService;
-    public ArrayList<MerchantStock> getMerchantStocks() {
-        return merchantStockList;
-    }
+    private ArrayList<MerchantStock> merchantstocklist = new ArrayList<>();
+    private final ProductService productService;
 
-    public boolean addMerchantStocks(MerchantStock merchantStock){
-        return merchantStockList.add(merchantStock);
-    }
-
-    public Boolean deleteMerchantStocks(String merchantStock) {
-        for (int i = 0; i < merchantStockList.size(); i++) {
-            if (merchantStockList.get(i).getId().equals(merchantStock)) {
-                merchantStockList.remove(i);
-                return true;
+    public Integer getStocks(String productId){
+        for (MerchantStock merchantStock : merchantstocklist){
+            if (merchantStock.getProductId().equals(productId)){
+                return merchantStock.getStock();
             }
         }
-        return false;
+
+        return null;
     }
 
-    public Boolean updateMerchantStocks(MerchantStock merchantStock) {
-        for (int i = 0; i < merchantStockList.size(); i++) {
-            if (merchantStockList.get(i).getId().equals(merchantStock.getId())) {
-                merchantStockList.set(i,merchantStock);
-                return true;
-            }
-        }
-        return false;
+    public ArrayList<MerchantStock> getMerchantStocks(){
+        return merchantstocklist;
     }
 
-    public MerchantStock merchantStockProductsID(String merchantStockProductIDid){
-        for (MerchantStock merchantStock:merchantStockList) {
-            if(merchantStockProductIDid.equals(merchantStock.getId())){
-                return merchantStock;
+    public Integer getMerchantStockId(String id){
+        for (int i = 0; i <merchantstocklist.size() ; i++) {
+            if(merchantstocklist.get(i).getID().equals(id)){
+                return i;
             }
         }
         return null;
     }
 
-    public Integer addPToMS(String userId, String merchantId, Integer additional_stock){
-
-        User user = userService.getUsersID(userId);
-        if(user == null){
-            return -1;
+    public MerchantStock getMerchantStocks(String id){
+        for (int i = 0; i <merchantstocklist.size() ; i++) {
+            if(merchantstocklist.get(i).getID().equals(id)){
+                return merchantstocklist.get(i);
+            }
         }
-        MerchantStock merchantStock = merchantStockProductsID(merchantId);
-        if(merchantStock == null){
-            return 0;
-        }
-        merchantStock.setStock(merchantStock.getStock()+additional_stock);
-        return 1;
+        return null;
     }
 
-
+    public Boolean addMerchantStocks(MerchantStock merchantStock){
+        return merchantstocklist.add(merchantStock);
+    }
+    public Boolean updateMerchantStocks(MerchantStock merchantStock,String id){
+        Integer tarMerchantStockId = getMerchantStockId(id);
+        if(tarMerchantStockId == null){
+            return false;
+        }
+        merchantstocklist.set(tarMerchantStockId,merchantStock);
+        return true;
+    }
+    public Boolean deleteMerchantStocks(String id){
+        Integer tarMerchantStockId = getMerchantStockId(id);
+        if(tarMerchantStockId == null){return false;}
+        merchantstocklist.remove(tarMerchantStockId);
+        return true;
+    }
+    public Integer addProductStocks(String merchantId,String productId,Integer merchantStock){
+        MerchantStock tarMerchant = getMerchantStocks(merchantId);
+        if(tarMerchant == null){
+            return -1;
+        }
+        Product tarProduct = productService.getProducts(productId);
+        if(tarProduct == null){
+            return 0;
+        }
+        tarMerchant.setStock(tarMerchant.getStock() + merchantStock);
+        return 1;
+    }
 }
