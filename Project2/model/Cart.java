@@ -1,6 +1,5 @@
-package com.example.ecommercewebsite.modle;
+package com.example.ecommercewebsite2\.Model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -11,17 +10,17 @@ import java.util.ArrayList;
 @Data
 public class Cart {
 
-    @NotBlank(message = "Id is required")
-    @Size(min = 3, message = "Have to be 3 character long")
+    @NotBlank(message = "id can't be empty")
+    @Size(min = 3,message = "id has to be 3 char at least")
     private String id;
-    @NotBlank(message = "Name is required")
-    @Size(min = 3, message = "Have to be 3 character long")
-    private String userid;
+    @NotBlank(message = "user id can't be empty")
+    @Size(min = 3,message = "user id has to be 3 char at least")
+    private String userId;
     private ArrayList<Product> products;
 
-    public Cart(String id, String userid) {
+    public Cart(String id, String userId) {
         this.id = id;
-        this.userid = userid;
+        this.userId = userId;
         this.products = new ArrayList<>();
     }
 }
