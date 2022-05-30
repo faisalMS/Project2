@@ -1,8 +1,9 @@
-package com.example.ecommercewebsite.service;
+package com.example.ecommercewebsite.Service;
 
-import com.example.ecommercewebsite.modle.Cart;
-import com.example.ecommercewebsite.modle.Product;
-import com.example.ecommercewebsite.modle.User;
+import com.example.ecommercewebsite.Model.Cart;
+import com.example.ecommercewebsite.Model.MerchantStock;
+import com.example.ecommercewebsite.Model.Product;
+import com.example.ecommercewebsite.Model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,64 +14,59 @@ import java.util.ArrayList;
 public class CartService {
 
 
-    private ArrayList<Cart> cartList = new ArrayList<>();
-
-    private final UserService userService;
 
 
-    private final ProductService productService;
-
-    public ArrayList<Cart> getCarts() {
-        return cartList;
-    }
+        private ArrayList<Cart> cartlist = new ArrayList();
+        private final ProductService productService;
+        private final UserService userService;
 
 
-
-    public Integer addProduct(String cartId, String userId, String productId){
-        Cart cart = findCart(cartId);
-        if(cart == null){
-            return -1;
+        public ArrayList<Cart> getCarts(){
+            return cartlist;
         }
-        User user = userService.getUsersID(userId);
-        if(user == null){
-            return 0;
-        }
-        Product product = productService.getProduct(productId);
-        if(product == null){
-            return 1;
-        }
-        cart.getProducts().add(product);
-        return 2;
 
-    }
 
-    public Integer removeProduct(String cartId, String userID, String productID){
-        Cart cart = findCart(cartId);
-        if(cart == null){
-            return -1;
-        }
-        User user = userService.getUsersID(userID);
-        if(user == null){
-            return 0;
-        }
-        Product product = productService.getProduct(productID);
-        if(product == null){
-            return 1;
-        }
-        cart.getProducts().remove(product);
-        return 2;
-
-    }
-
-    public Cart findCart(String cartID){
-        for (Cart cart : cartList
-        ) {
-            if(cart.getId().equals(cartID)){
-                return cart;
+        public Integer addProducts(String cartID, String userId, String productId){
+            Cart tarCart = getcartsId (cartID);
+            if(tarCart == null){
+                return -1;
             }
+            User tarUser = userService.getUsers(userId);
+            if(tarUser == null){
+                return 0;
+            }
+            Product tarProduct = productService.getProducts(productId);
+            if(tarProduct == null){
+                return 1;
+            }
+            tarCart.getProducts().add(tarProduct);
+            return 2;
+
         }
-        return null;
+        public Integer deleteProducts(String cartID, String userID, String productID){
+            Cart tarCart = getcartsId(cartID);
+            if(tarCart == null){
+                return -1;
+            }
+            User tarUser = userService.getUsers(userID);
+            if(tarUser == null){
+                return 0;
+            }
+            Product tarProduct=productService.getProducts(productID);
+            if(tarProduct==null){
+                return 1;
+            }
+            tarCart.getProducts().remove(tarProduct);
+            return 2;
+
+        }
+        public Cart getcartsId(String cartID){
+            for (Cart cart : cartlist
+            ) {
+                if(cart.getId().equals(cartID)){
+                    return cart;
+                }
+            }
+            return null;
+        }
     }
-
-
-}
