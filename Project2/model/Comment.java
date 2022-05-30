@@ -1,26 +1,26 @@
-package com.example.ecommercewebsite.modle;
+package com.example.ecommercewebsite.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.validator.constraints.Range;
 
-import javax.validation.constraints.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-@AllArgsConstructor
-@Data
+@Data @AllArgsConstructor
 public class Comment {
 
-    @NotBlank(message = "Id is required")
-    @Size(min = 3, message = "Have to be 3 character long")
+    @NotBlank(message = "id can't be empty")
+    @Size(min = 3,message = "id has to be at least 3 char")
     private String id;
-    @NotBlank(message = "UserId is required")
-    @Size(min = 5, message = "Have to be 5 length long")
-    private String userid;
-    @NotBlank(message = "Message is required")
-    @Size(min = 6, message = "Have to be 6 length long")
+    @NotBlank(message = "user id can't be empty")
+    @Size(min = 3,message = "user id has to be at least 3 char")
+    private String userId;
+    @NotBlank(message = "message can't be empty")
+    @Size(min = 6,message = "message has to be at least 6 char")
     private String message;
-    @NotNull(message = "Rate is required")
-    @Range(min = 1, max = 5, message = "must be a number between 1 - 5")
+    @NotBlank(message = "rate can't be empty")
+    @Size(min = 1, max = 5,message = "rating has to be between 1 and 5")
     private Integer rate;
 }
