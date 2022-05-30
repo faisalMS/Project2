@@ -1,8 +1,8 @@
-package com.example.ecommercewebsite.controller;
+package com.example.ecommercewebsite.Controller;
 
-import com.example.ecommercewebsite.modle.Api;
-import com.example.ecommercewebsite.modle.Product;
-import com.example.ecommercewebsite.service.ProductService;
+import com.example.ecommercewebsite2.Model.Api;
+import com.example.ecommercewebsite2.Model.Product;
+import com.example.ecommercewebsite2.Service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,51 +10,54 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("api/v1/product")
 @RequiredArgsConstructor
 public class ProductController {
 
+
+
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<ArrayList<Product>> getProducts(){
+    public ResponseEntity getProducts(){
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts());
     }
 
     @PostMapping
-    public ResponseEntity<Api> addProducts(@RequestBody @Valid Product product, Errors errors) {
-        if (errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(errors.getFieldError().getDefaultMessage(), 400));
+    public ResponseEntity addProducts(@RequestBody @Valid Product product, Errors error){
+        if(error.hasFieldErrors()){
+            String message = error.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(message,400));
         }
-        boolean isAddProducts = productService.addProducts(product);
-        if (!isAddProducts) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Error adding a product", 500));
+        Boolean isAddProduct = productService.addProducts(product);
+        if(!isAddProduct){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Product not added",400));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("New product added", 200));
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("Product added",200));
     }
-
-    @DeleteMapping("/{productID}")
-    public ResponseEntity<Api> deleteProducts(@PathVariable String productID) {
-        Boolean deleteProducts = productService.deleteProducts(productID);
-        if (!deleteProducts) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("productID doesn't exists!",400));
+    @PutMapping("update/{productId}")
+    public ResponseEntity updateProducts(@RequestBody @Valid Product product , @PathVariable String productId, Errors error){
+        if(error.hasFieldErrors()){
+            String message = error.getFieldError().getDefaultMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(message,400));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("productID deleted!",200));
+        Boolean isUpdateProduct = productService.updateProducts(product,productId);
+        if(!isUpdateProduct){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("No updated",400));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("Product updated",200));
+
     }
+    @DeleteMapping("delete/{productId}")
+    public ResponseEntity deleteProducts(@PathVariable String productId){
+        Boolean isDeleteProduct = productService.deleteProducts(productId);
+        if(!isDeleteProduct){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api("Product not deleted",400));
 
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new Api("Product deleted",200));
 
-    @PutMapping
-    public ResponseEntity<Api> updateProducts(@RequestBody @Valid Product product, Errors errors) {
-        if(errors.hasErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Api(errors.getFieldError().getDefaultMessage(),400));
-        }
-        Boolean updateProducts = productService.updateProducts(product);
-        if (!updateProducts) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Api("Advisor edited!",500));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new Api("advisorID doesn't exists!",200));
     }
 }
