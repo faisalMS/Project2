@@ -1,28 +1,24 @@
-package com.example.ecommercewebsite.modle;
+package com.example.ecommercewebsite2.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.*;
-import javax.xml.stream.events.Comment;
-import java.util.ArrayList;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
-@AllArgsConstructor
-@Data
+@AllArgsConstructor @Data
 public class PurchaseHistory {
-
-    @NotBlank(message = "Id is required")
-    @Size(min = 3, message = "Have to be 3 character long")
+    @NotBlank(message = "id can't be empty")
+    @Size(min = 3,message = "id has to be at least 3 char")
     private String id;
-    @NotBlank(message = "UserId is required")
-    @Size(min = 3, message = "Have to be 3 length long")
-    private String userid;
-    @NotBlank(message = "ProductId is required")
-    @Size(min = 3, message = "Have to be 3 character long")
-    private String productid;
-    @NotNull(message = "Price is required")
-    @Positive(message = "Must be a positive number")
+    @NotBlank(message = "user id can't be empty")
+    @Size(min = 3,message = "user id has to be at least 3 char")
+    private String userId;
+    @NotBlank(message = "product id can't be empty")
+    @Size(min = 3,message = "product id has to be at least 3 char")
+    private String productId;
+    @NotBlank(message = "balance can't be empty")
+    @Positive(message = "balance has to be more than 0")
     private Integer price;
-
-
 }
