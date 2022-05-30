@@ -1,23 +1,19 @@
-package com.example.ecommercewebsite.modle;
+package com.example.ecommercewebsite.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import javax.xml.stream.events.Comment;
-import java.util.ArrayList;
 
-@AllArgsConstructor
-@Data
+@AllArgsConstructor @Data
 public class Category {
 
-    @NotBlank(message = "Id is required")
-    @Size(min = 3, message = "have to be 3 character long")
-    private String id;
-    @NotBlank(message = "name is required")
-    @Size(min = 3, message = "have to be 3 length long")
+    @NotBlank(message = "id can't be empty")
+    @Size(min = 3,message = "id has to be 3 char at least")
+    private String ID;
+    @NotBlank(message = "name can't be empty")
+    @Size( min = 3,message = "name has to be 3 char at least")
     private String name;
 }
